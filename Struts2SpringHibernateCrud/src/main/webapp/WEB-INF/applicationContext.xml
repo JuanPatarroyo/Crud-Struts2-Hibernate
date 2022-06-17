@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+                http://www.springframework.org/schema/beans 
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+                http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/jee 
+                http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx 
+                http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="co.com.data" />
+    <context:component-scan base-package="co.com.service" />
+    
+    <!-- Obtiene el entity manager inyectado en la fabrica de Spring -->
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />	
+    
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" />
+
+    <!--Nombre que mapea con la Unidad de Persistencia en el archivo web.xml-->
+    <jee:jndi-lookup id="entityManagerFactory" jndi-name="persistence/PersistenceUnit" />
+            
+    <!-- Detecta @Transactional -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>
